@@ -1,1 +1,0 @@
-export const SET_BOARD_ARRAY = 'SET_BOARD_ARRAY';
