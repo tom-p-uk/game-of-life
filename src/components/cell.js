@@ -1,4 +1,6 @@
 export default class Cell {
+  // 'initial' bool determines whether cell is being initialised or iterated
+  // 'random' bool determines whether cell value is randomly allocated or not
   constructor(row, col, initial, random, density, boardArr, prevValue) {
     this.row = row;
     this.col = col;

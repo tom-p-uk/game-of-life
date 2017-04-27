@@ -10,8 +10,8 @@ export default class App extends Component {
       boardArr: null,
       canvasWidth: 650,
       canvasHeight: 650,
-      numRows: 100,
-      numCols: 100,
+      numRows: 90,
+      numCols: 90,
       cellWidth: null,
       cellHeight: null,
       density: 'high',
@@ -58,7 +58,7 @@ export default class App extends Component {
     this.setState({ canvasWidth, canvasHeight, cellWidth, cellHeight })
   }
 
-  // update the board array with new cells
+  // update the board array with new cells and increment iterations value
   iterate() {
     const boardArr = this.state.boardArr.map(row => {
       return row.map(cell => {
@@ -66,15 +66,15 @@ export default class App extends Component {
         return newCell;
       });
     });
-    this.setState({ boardArr });
-    // this.setState({ iterations: this.state.iterations + 1 });
+    this.setState({ boardArr, iterations: this.state.iterations + 1 });
   }
 
+  // set timer if one is not already running, else pause
   playPause() {
     if (!this.state.playing) {
       const intervalTimer = setInterval(() => {
         this.iterate();
-      }, 20);
+      }, 50);
       this.setState({ playing: true });
       this.setState({ timer: intervalTimer });
     }
@@ -127,20 +127,28 @@ export default class App extends Component {
     this.toggleCellValue(row, col);
   }
 
+  // set new board on button clicks, with selected random/density values
   newBoard(random, density) {
-    // width, height, initial, random, density
-    this.setState({ playing: false, timer: null });
+    this.setState({ playing: false, timer: null, iterations: 0 });
+    clearInterval(this.state.timer);
     this.setBoardArray(this.state.numRows, this.state.numCols, true, random, density);
   }
 
   render() {
     return(
       <div>
-        <button className="btn btn-default" onClick={() => this.playPause()}>Play/Pause</button>
-        <button className="btn btn-default" onClick={() => this.newBoard(true, 'low')}>Low</button>
-        <button className="btn btn-default" onClick={() => this.newBoard(true, 'mid')}>Mid</button>
-        <button className="btn btn-default" onClick={() => this.newBoard(true, 'high')}>High</button>
-        <button className="btn btn-default" onClick={() => this.newBoard(false, null)}>Clear</button>
+        <div className="buttons-container">
+          <div className="play-pause-and-clear">
+            <button className="btn btn-default play-pause" onClick={() => this.playPause()}>{this.state.playing ? 'Pause' : 'Play'}</button>
+            <button className="btn btn-default" onClick={() => this.newBoard(false, null)}>Clear</button>
+          </div>
+          <div className="density">
+            <button className="btn btn-default" onClick={() => this.newBoard(true, 'low')}>Low Density</button>
+            <button className="btn btn-default" onClick={() => this.newBoard(true, 'mid')}>Medium Density</button>
+            <button className="btn btn-default" onClick={() => this.newBoard(true, 'high')}>High Density</button>
+          </div>
+        </div>
+
         <div>{this.state.iterations}</div>
         <canvas
           ref="canvas"

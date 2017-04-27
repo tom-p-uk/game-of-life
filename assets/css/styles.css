@@ -5,5 +5,16 @@
 
 canvas {
   border: solid 1px black;
-  margin: 10px auto 10px 
+  margin: 10px auto 10px
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 650px;
+}
+
+.play-pause {
+  width: 70px;
 }
